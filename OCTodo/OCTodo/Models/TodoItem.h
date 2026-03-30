@@ -27,6 +27,6 @@
 
 /// 自定义初始化方法
 /// instancetype: 返回当前类的实例，比 id 更安全（编译器能检查类型）
-- (instancetype)initWithTitle:(NSString *)title;
+- (TodoItem *)initWithTitle:(NSString *)title;
 
 @end

@@ -66,7 +66,9 @@
     welcomeLabel.text = [NSString stringWithFormat:@"共 %lu 个待办事项",
                          (unsigned long)self.todoItems.count];
     welcomeLabel.font = [UIFont systemFontOfSize:24 weight:UIFontWeightBold];
+    welcomeLabel.textColor = [UIColor blackColor];
     welcomeLabel.textAlignment = NSTextAlignmentCenter;
+    welcomeLabel.backgroundColor = [UIColor yellowColor]; // 临时调试色，确认 label 位置
     welcomeLabel.translatesAutoresizingMaskIntoConstraints = NO;
 
     [self.view addSubview:welcomeLabel];
