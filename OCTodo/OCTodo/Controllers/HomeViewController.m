@@ -2,52 +2,83 @@
  * HomeViewController.m — 首页控制器实现
  *
  * 这是我们 OCTodo App 的主页面
- * 后续会在这里展示 Todo 列表
+ * 第二课新增：使用 TodoItem 模型，演示内存管理
  */
 
 #import "HomeViewController.h"
+#import "TodoItem.h"
+
+@interface HomeViewController ()
+
+/// 用 strong 持有数组，数组 strong 持有每个 TodoItem
+@property (nonatomic, strong) NSMutableArray<TodoItem *> *todoItems;
+
+@end
 
 @implementation HomeViewController
 
-/// viewDidLoad: 视图加载完成后调用（只调用一次）
-/// 【Web 类比】类似 React 的 componentDidMount / useEffect([], ...)
-/// 这是设置 UI 和初始化数据的最佳时机
 - (void)viewDidLoad {
-    [super viewDidLoad]; // 必须调用父类方法
+    [super viewDidLoad];
 
-    // 设置页面标题（显示在导航栏上）
     self.title = @"OCTodo";
-
-    // 设置背景色
-    // 【OC 语法】[类名 方法名] 是 OC 调用方法的方式
-    // 类似 JS 的 ClassName.methodName()
     self.view.backgroundColor = [UIColor whiteColor];
 
-    // 添加一个欢迎标签，确认 App 能正常运行
+    // 初始化数据
+    [self setupData];
+
+    // 设置 UI
     [self setupWelcomeLabel];
+}
+
+/// 初始化示例数据 — 演示 TodoItem 的创建和内存管理
+- (void)setupData {
+    self.todoItems = [[NSMutableArray alloc] init];
+
+    // 创建几个示例 TodoItem
+    TodoItem *item1 = [[TodoItem alloc] initWithTitle:@"学习 OC 基础语法"];
+    item1.isCompleted = YES;
+
+    TodoItem *item2 = [[TodoItem alloc] initWithTitle:@"理解内存管理"];
+
+    TodoItem *item3 = [[TodoItem alloc] initWithTitle:@"学习 Foundation 框架"];
+
+    [self.todoItems addObject:item1];
+    [self.todoItems addObject:item2];
+    [self.todoItems addObject:item3];
+
+    // 演示 NSLog 打印（会调用 TodoItem 的 description 方法）
+    for (TodoItem *item in self.todoItems) {
+        NSLog(@"%@", item);
+    }
+
+    // 演示 Block + weakSelf 避免循环引用
+    __weak typeof(self) weakSelf = self;
+    item2.onComplete = ^{
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (!strongSelf) return;
+        NSLog(@"✅ 完成了: %@", strongSelf.todoItems[1].title);
+    };
 }
 
 /// 设置欢迎标签
 - (void)setupWelcomeLabel {
-    // 创建标签（类似 HTML 的 <p> 或 <span>）
     UILabel *welcomeLabel = [[UILabel alloc] init];
-    welcomeLabel.text = @"欢迎来到 OCTodo!";
+    welcomeLabel.text = [NSString stringWithFormat:@"共 %lu 个待办事项",
+                         (unsigned long)self.todoItems.count];
     welcomeLabel.font = [UIFont systemFontOfSize:24 weight:UIFontWeightBold];
     welcomeLabel.textAlignment = NSTextAlignmentCenter;
-
-    // 关闭 autoresizing（使用 AutoLayout 必须设置这个）
-    // 类似 CSS 里切换 position 模式
     welcomeLabel.translatesAutoresizingMaskIntoConstraints = NO;
 
-    // 添加到视图上（类似 DOM 的 appendChild）
     [self.view addSubview:welcomeLabel];
 
-    // AutoLayout 约束（类似 CSS 的 flexbox 居中）
-    // 把标签放在页面正中间
     [NSLayoutConstraint activateConstraints:@[
         [welcomeLabel.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
         [welcomeLabel.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor]
     ]];
+}
+
+- (void)dealloc {
+    NSLog(@"♻️ HomeViewController 被释放了");
 }
 
 @end
