@@ -12,6 +12,8 @@
 		A1000003 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2000005 /* HomeViewController.m */; };
 		A1000004 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2000007 /* LaunchScreen.storyboard */; };
 		A1000005 /* TodoItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A2000009 /* TodoItem.m */; };
+		A1000006 /* NSString+Validation.m in Sources */ = {isa = PBXBuildFile; fileRef = A200000B /* NSString+Validation.m */; };
+		A1000007 /* TodoItem+Display.m in Sources */ = {isa = PBXBuildFile; fileRef = A200000D /* TodoItem+Display.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,10 @@
 		A2000007 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A2000008 /* TodoItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TodoItem.h; sourceTree = "<group>"; };
 		A2000009 /* TodoItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TodoItem.m; sourceTree = "<group>"; };
+		A200000A /* NSString+Validation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+Validation.h"; sourceTree = "<group>"; };
+		A200000B /* NSString+Validation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+Validation.m"; sourceTree = "<group>"; };
+		A200000C /* TodoItem+Display.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TodoItem+Display.h"; sourceTree = "<group>"; };
+		A200000D /* TodoItem+Display.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "TodoItem+Display.m"; sourceTree = "<group>"; };
 		A3000001 /* OCTodo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OCTodo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -83,6 +89,8 @@
 			children = (
 				A2000008 /* TodoItem.h */,
 				A2000009 /* TodoItem.m */,
+				A200000C /* TodoItem+Display.h */,
+				A200000D /* TodoItem+Display.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -105,6 +113,8 @@
 		A5000008 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				A200000A /* NSString+Validation.h */,
+				A200000B /* NSString+Validation.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -191,6 +201,8 @@
 				A1000002 /* AppDelegate.m in Sources */,
 				A1000003 /* HomeViewController.m in Sources */,
 				A1000005 /* TodoItem.m in Sources */,
+				A1000006 /* NSString+Validation.m in Sources */,
+				A1000007 /* TodoItem+Display.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
