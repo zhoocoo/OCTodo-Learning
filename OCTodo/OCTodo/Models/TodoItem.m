@@ -34,9 +34,26 @@
 /// 重写 description 方法，方便 NSLog 打印
 /// 类似 JS 的 toString()
 - (NSString *)description {
-    return [NSString stringWithFormat:@"TodoItem: %@ [%@]",
+    return [NSString stringWithFormat:@"TodoItem: %@ [%@] 创建于 %@",
             self.title,
-            self.isCompleted ? @"✅" : @"⬜️"];
+            self.isCompleted ? @"✅" : @"⬜️",
+            [self createdAtString]];
+}
+
+#pragma mark - 第三课新增：Foundation 实战方法
+
+/// 返回创建时间的格式化字符串
+/// 演示 NSDateFormatter 的用法
+- (NSString *)createdAtString {
+    NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
+    fmt.dateFormat = @"MM-dd HH:mm";
+    return [fmt stringFromDate:self.createdAt];
+}
+
+/// 类工厂方法：封装 alloc + init，提供更简洁的创建方式
+/// 【Web 类比】类似 JS 的静态工厂方法: TodoItem.create("学习OC")
++ (instancetype)itemWithTitle:(NSString *)title {
+    return [[self alloc] initWithTitle:title];
 }
 
 @end

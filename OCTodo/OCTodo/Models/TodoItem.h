@@ -26,7 +26,12 @@
 @property (nonatomic, copy) void (^onComplete)(void);
 
 /// 自定义初始化方法
-/// instancetype: 返回当前类的实例，比 id 更安全（编译器能检查类型）
 - (TodoItem *)initWithTitle:(NSString *)title;
+
+/// 【第三课新增】返回创建时间的格式化字符串（如 "03-30 16:30"）
+- (NSString *)createdAtString;
+
+/// 【第三课新增】类工厂方法：快捷创建
++ (instancetype)itemWithTitle:(NSString *)title;
 
 @end
