@@ -26,11 +26,35 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    NSLog(@"🔵 viewDidLoad — 只调用一次");
     self.title = @"OCTodo";
     self.view.backgroundColor = [UIColor whiteColor];
 
     [self setupData];
     [self setupUI];
+}
+
+/// 第八课：每次页面即将显示时调用（包括从其他页面返回）
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    NSLog(@"🟢 viewWillAppear — 页面即将显示");
+    // 适合在这里刷新数据（从其他页面返回时数据可能变了）
+    [self refreshUI];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    NSLog(@"🟢 viewDidAppear — 页面已经显示，frame 已确定");
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    NSLog(@"🔴 viewWillDisappear — 页面即将消失");
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    NSLog(@"🔴 viewDidDisappear — 页面已消失");
 }
 
 #pragma mark - 数据
