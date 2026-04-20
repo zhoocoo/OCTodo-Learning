@@ -12,7 +12,9 @@
       "Bash(brew install:*)",
       "Bash(gh auth:*)",
       "Bash(gh repo:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(xcodebuild -project OCTodo.xcodeproj -scheme OCTodo -sdk iphonesimulator -configuration Debug -destination 'generic/platform=iOS Simulator' build)",
+      "Bash(defuddle parse *)"
     ]
   }
 }
