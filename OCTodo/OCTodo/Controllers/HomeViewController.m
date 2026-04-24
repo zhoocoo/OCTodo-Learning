@@ -1,17 +1,17 @@
 /**
  * HomeViewController.m — 首页控制器
  *
- * 第十课：导航栏"+"按钮跳转到 AddTodoVC，通过 delegate 接收新待办
+ * 第十一课重构：数据层抽取到 TodoStore（MVC 的 Model 层）
+ * VC 只负责协调：读 Store 的数据展示，把用户操作交给 Store 处理
  */
 
 #import "HomeViewController.h"
-#import "TodoItem.h"
+#import "TodoStore.h"
 #import "TodoItem+Display.h"
 #import "AddTodoViewController.h"
 
 @interface HomeViewController () <AddTodoDelegate>
 
-@property (nonatomic, strong) NSMutableArray<TodoItem *> *todoItems;
 @property (nonatomic, strong) UILabel *countLabel;
 @property (nonatomic, strong) UILabel *listLabel;
 
@@ -28,13 +28,23 @@
     self.view.backgroundColor = [UIColor whiteColor];
 
     [self setupNavigationBar];
-    [self setupData];
     [self setupUI];
+
+    // 监听 Store 数据变化，自动刷新 UI
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(storeDidChange:)
+                                                 name:TodoStoreDidChangeNotification
+                                               object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self refreshUI];
+}
+
+- (void)dealloc {
+    // ⚠️ 必须移除监听，否则通知发送时会崩溃
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - 导航栏
@@ -44,18 +54,6 @@
         [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                      target:self
                                                      action:@selector(addButtonTapped)];
-}
-
-#pragma mark - 数据
-
-- (void)setupData {
-    self.todoItems = [[NSMutableArray alloc] init];
-
-    [self.todoItems addObject:[TodoItem itemWithTitle:@"学习 OC 基础语法"]];
-    [self.todoItems addObject:[TodoItem itemWithTitle:@"理解内存管理"]];
-    [self.todoItems addObject:[TodoItem itemWithTitle:@"学习 Foundation 框架"]];
-
-    self.todoItems.firstObject.isCompleted = YES;
 }
 
 #pragma mark - UI 搭建
@@ -100,24 +98,32 @@
 
 - (void)addTodoViewController:(AddTodoViewController *)controller
               didAddWithTitle:(NSString *)title {
-    TodoItem *newItem = [TodoItem itemWithTitle:title];
-    [self.todoItems addObject:newItem];
-    // viewWillAppear 会自动调用 refreshUI
+    // 不再自己维护数组，交给 Store
+    [[TodoStore sharedStore] addItemWithTitle:title];
+    // Store 会发通知，storeDidChange: 会被自动调用刷新 UI
+}
+
+#pragma mark - Store 变更通知
+
+- (void)storeDidChange:(NSNotification *)note {
+    [self refreshUI];
 }
 
 #pragma mark - UI 刷新
 
 - (void)refreshUI {
-    NSUInteger total = self.todoItems.count;
+    NSArray<TodoItem *> *items = [TodoStore sharedStore].items;
+
+    NSUInteger total = items.count;
     NSUInteger done = 0;
-    for (TodoItem *item in self.todoItems) {
+    for (TodoItem *item in items) {
         if (item.isCompleted) done++;
     }
     self.countLabel.text = [NSString stringWithFormat:@"共 %lu 项，已完成 %lu 项",
                             (unsigned long)total, (unsigned long)done];
 
     NSMutableString *listText = [NSMutableString string];
-    for (TodoItem *item in self.todoItems) {
+    for (TodoItem *item in items) {
         [listText appendFormat:@"%@\n", [item displayText]];
     }
     self.listLabel.text = listText;

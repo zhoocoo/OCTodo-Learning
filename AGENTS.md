@@ -45,3 +45,12 @@
    git add -A && git commit -m "[ingest] <主题简述>"
    git tag -f last-ingest HEAD
    ```
+
+
+<claude-mem-context>
+# Memory Context
+
+# [IOS] recent context, 2026-04-24 5:22pm GMT+8
+
+No previous sessions found.
+</claude-mem-context>
